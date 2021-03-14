@@ -9,11 +9,11 @@ When installing this extension, you will be able see bitpanda crypto in your top
 
 ### Top menu 
 
-![Top Menu](screenshots/screenshot-1.jpg)
+![Top Menu](/screenshots/screenshot-1.jpg)
 
 ### Extension settings
 
-![Extension settings](screenshots/screenshot-2.jpg)
+![Extension settings](/screenshots/screenshot-2.jpg)
 
 ## Installation
 
