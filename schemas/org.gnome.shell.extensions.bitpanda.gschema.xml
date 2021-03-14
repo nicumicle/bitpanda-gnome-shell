@@ -37,7 +37,6 @@
     <value value="32" nick="SNX"/>
     <value value="33" nick="NEO"/>
     <value value="34" nick="LSK"/>
-    <value value="35" nick="BNB"/>
     <value value="36" nick="FIL"/>
     <value value="37" nick="BAT"/>
     <value value="38" nick="BAND"/>
@@ -55,13 +54,6 @@
     <value value="50" nick="WAVES"/>
     <value value="51" nick="REP"/>
     <value value="52" nick="ALGO"/>
-    <value value="53" nick="BSV"/>
-    <value value="54" nick="XMR"/>
-    <value value="55" nick="THETA"/>
-    <value value="56" nick="HT"/>
-    <value value="57" nick="ZIL"/>
-    <value value="58" nick="CRO"/>
-    <value value="59" nick="OKB"/>
   </enum>
 
   <enum id="org.gnome.shell.extensions.bitpanda.curency">
