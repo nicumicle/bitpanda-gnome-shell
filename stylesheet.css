@@ -1,0 +1,12 @@
+.panel-status-menu-box{
+	background: rgba(244,0,0);
+}
+.red{
+	color: rgb(255,0,0);
+}
+.green{
+	color: rgb(0,255,0);
+}
+.white{
+	color: rgb(255,255,255);
+}

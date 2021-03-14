@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+
+  <enum id="org.gnome.shell.extensions.bitpanda.cryptocoin">
+    <value value="0" nick="BTC"/>
+    <value value="1" nick="ETH"/>
+    <value value="2" nick="BEST"/>
+    <value value="3" nick="CHZ"/>
+    <value value="4" nick="ADA"/>
+    <value value="5" nick="LTC"/>
+    <value value="6" nick="DOT"/>
+    <value value="7" nick="BTT"/>
+    <value value="8" nick="DASH"/>
+    <value value="9" nick="XRP"/>
+    <value value="10" nick="MIOTA"/>
+    <value value="11" nick="XLM"/>
+    <value value="12" nick="TRX"/>
+    <value value="13" nick="DOGE"/>
+    <value value="14" nick="DGB"/>
+    <value value="15" nick="AVAX"/>
+    <value value="16" nick="USDT"/>
+    <value value="17" nick="UNI"/>
+    <value value="18" nick="VET"/>
+    <value value="19" nick="LINK"/>
+    <value value="20" nick="PAN"/>
+    <value value="21" nick="AAVE"/>
+    <value value="22" nick="USDC"/>
+    <value value="23" nick="BCH"/>
+    <value value="24" nick="ZRX"/>
+    <value value="25" nick="UMA"/>
+    <value value="26" nick="REN"/>
+    <value value="27" nick="YFI"/>
+    <value value="28" nick="ATOM"/>
+    <value value="29" nick="EOS"/>
+    <value value="30" nick="OCEAN"/>
+    <value value="31" nick="XEM"/>
+    <value value="32" nick="SNX"/>
+    <value value="33" nick="NEO"/>
+    <value value="34" nick="LSK"/>
+    <value value="35" nick="BNB"/>
+    <value value="36" nick="FIL"/>
+    <value value="37" nick="BAT"/>
+    <value value="38" nick="BAND"/>
+    <value value="39" nick="XTZ"/>
+    <value value="40" nick="MKR"/>
+    <value value="41" nick="COMP"/>
+    <value value="42" nick="ANT"/>
+    <value value="43" nick="ETC"/>
+    <value value="44" nick="KMD"/>
+    <value value="45" nick="QTUM"/>
+    <value value="46" nick="ONT"/>
+    <value value="47" nick="OMG"/>
+    <value value="48" nick="ZEC"/>
+    <value value="49" nick="KNC"/>
+    <value value="50" nick="WAVES"/>
+    <value value="51" nick="REP"/>
+    <value value="52" nick="ALGO"/>
+    <value value="53" nick="BSV"/>
+    <value value="54" nick="XMR"/>
+    <value value="55" nick="THETA"/>
+    <value value="56" nick="HT"/>
+    <value value="57" nick="ZIL"/>
+    <value value="58" nick="CRO"/>
+    <value value="59" nick="OKB"/>
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.bitpanda.curency">
+    <value value="0" nick="EUR"/>
+    <value value="1" nick="USD"/>
+    <value value="2" nick="GBP"/>
+    <value value="3" nick="CHF"/>
+    <value value="4" nick="TRY"/>
+  </enum>
+
+
+  <schema id="org.gnome.shell.extensions.bitpanda"
+    path="/org/gnome/shell/extensions/bitpanda@bitpanda.com/">
+
+     <key type="i" name="number-of-decimals">
+      <default>2</default>
+      <summary>Number of decimals</summary>
+      <description>How many decimals to be displayed in the menu bar for the current cryptocoin.</description>
+    </key>
+
+    <key name="cryptocoin" enum="org.gnome.shell.extensions.bitpanda.cryptocoin">
+      <default>'BTC'</default>
+      <summary>summary</summary>
+      <description>description</description>
+    </key>
+    
+    <key name="curency" enum="org.gnome.shell.extensions.bitpanda.curency">
+      <default>'EUR'</default>
+    </key>
+
+    <key type="d" name="alert-above-1">
+      <default>0.00</default>
+      <summary>Above Price alert</summary>
+      <description>Trigger an allert when price is above specific value. If 0.00, then no alert is triggered.</description>
+    </key>
+
+    <key type="d" name="alert-below-1">
+      <default>0.00</default>
+      <summary>Below Price alert</summary>
+      <description>Trigger an allert when price is below specific value. If 0.00, then no alert is triggered.</description>
+    </key>
+
+  </schema>
+
+</schemalist>
