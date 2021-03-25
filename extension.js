@@ -34,10 +34,10 @@ const BipandaAssetsIndicator = new Lang.Class({
 
 			//add icon
   			const hbox = new St.BoxLayout({ style_class: "panel-status-menu-box" });
-        	const gicon = Gio.icon_new_for_string(Me.path + "/bitpanda.png");
-        	const bitpandaIcon = new St.Icon({ gicon: gicon, icon_size: "16" });
-        	hbox.add_child(bitpandaIcon);
-        	hbox.add_child(this.buttonText);
+        		const gicon = Gio.icon_new_for_string(Me.path + "/bitpanda.png");
+        		const bitpandaIcon = new St.Icon({ gicon: gicon, icon_size: "16" });
+        		hbox.add_child(bitpandaIcon);
+        		hbox.add_child(this.buttonText);
 			//endof icon
 
 			this.actor.add_actor(hbox);
@@ -49,12 +49,6 @@ const BipandaAssetsIndicator = new Lang.Class({
 
 			this._refresh();
 
-		},
-
-
-		_refreshMenu(){
-			this.menu.addMenuItem(new PopupMenu.PopupMenuItem('Anaaaaa'));
-			this.actor.show();
 		},
 		
 		_refresh: function () {
