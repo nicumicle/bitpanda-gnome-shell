@@ -74,6 +74,12 @@
       <description>How many decimals to be displayed in the menu bar for the current cryptocoin.</description>
     </key>
 
+     <key type="i" name="timeout">
+      <default>60</default>
+      <summary>Timeout (s)</summary>
+      <description>How oft the call to bitpanda API should be made. Time is seconds.</description>
+    </key>
+
     <key name="cryptocoin" enum="org.gnome.shell.extensions.bitpanda.cryptocoin">
       <default>'BTC'</default>
       <summary>summary</summary>

@@ -13,10 +13,10 @@ const Helper = Me.imports.src.helper;
 
 
 const BP_API_URL = 'https://api.bitpanda.com/v1/ohlc/';
-const TIMEOUT = 60; //seconds
+let TIMEOUT = 60; //seconds
 
 let _httpSession;
-let bpMenu;
+var bpMenu;
 
 
 const BipandaAssetsIndicator = new Lang.Class({
@@ -53,7 +53,7 @@ const BipandaAssetsIndicator = new Lang.Class({
 
 
 		_refreshMenu(){
-			this.menu.addMenuItem(new PopupMenu.PopupMenuItem('Anaaaaa'));
+			this.menu.addMenuItem(new PopupMenu.PopupMenuItem(''));
 			this.actor.show();
 		},
 		
@@ -68,6 +68,10 @@ const BipandaAssetsIndicator = new Lang.Class({
 			
 			_httpSession = new Soup.Session();
 			let settings = Helper.getSettings();
+			settingsTimeout = settings.get_int('timeout');
+			if(settingsTimeout > 0){
+				TIMEOUT = settingsTimeout;
+			}
 
 			let url = BP_API_URL 
 					+ Helper.getCryptoFromInt( settings.get_enum('cryptocoin') ) 
@@ -116,7 +120,7 @@ const BipandaAssetsIndicator = new Lang.Class({
 				this.buttonText.set_text(txt);
 			}
 		},
-
+		
 		_openSettings: function () {
 	        if (typeof ExtensionUtils.openPrefs === 'function') {
 	            ExtensionUtils.openPrefs();
