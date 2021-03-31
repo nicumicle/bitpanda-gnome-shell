@@ -41,16 +41,16 @@ const BipandaAssetsIndicator = new Lang.Class({
 			//endof icon
 
 			this.actor.add_actor(hbox);
-				
+
 			//Open url on click
 			//this.actor.connect('button-press-event', Lang.bind(this, this._openBrowser))
-			
-			this.actor.connect("button_press_event", Lang.bind(this, this._openSettings));	
+
+			this.actor.connect("button_press_event", Lang.bind(this, this._openSettings));
 
 			this._refresh();
 
 		},
-		
+
 		_refresh: function () {
 			this._loadData(this._refreshUI);
 			this._removeTimeout();
@@ -59,15 +59,15 @@ const BipandaAssetsIndicator = new Lang.Class({
 		},
 
 		_loadData: function () {
-			
+
 			_httpSession = new Soup.Session();
 			let settings = Helper.getSettings();
 
-			let url = BP_API_URL 
-					+ Helper.getCryptoFromInt( settings.get_enum('cryptocoin') ) 
-					+ '/' 
-					+ Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'name') 
-					+ '/' 
+			let url = BP_API_URL
+					+ Helper.getCryptoFromInt( settings.get_enum('cryptocoin') )
+					+ '/'
+					+ Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'name')
+					+ '/'
 					+ 'hour';
 
 			let message = Soup.form_request_new_from_hash('GET', url, []);
@@ -82,10 +82,10 @@ const BipandaAssetsIndicator = new Lang.Class({
 				)
 			);
 		},
-		
+
 		_refreshUI: function (jsonObject) {
 			 let settings = Helper.getSettings();
-			
+
 			if(typeof jsonObject.data === 'undefined' || jsonObject.data.length  === 0){
 				log('Wrong data received from API.');
 				return false;
@@ -95,18 +95,23 @@ const BipandaAssetsIndicator = new Lang.Class({
 
 			let numberOfDecimals = settings.get_int('number-of-decimals');
 
-			if(typeof lastItem.attributes !== 'undefined' && typeof lastItem.attributes.close !== 'undefined'){	
+			if(typeof lastItem.attributes !== 'undefined' && typeof lastItem.attributes.close !== 'undefined'){
 
 				let oldPrice = this.price;
 				this.price = parseFloat(lastItem.attributes.close).toFixed(numberOfDecimals).toString();
-				
-				let txt = Helper.getCryptoFromInt( settings.get_enum('cryptocoin')) + ': '  
-						+ this.price + ' ' 
-						+  Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'symbol');
-				
 
-				
-				this.buttonText.style_class = this.price >= oldPrice ? 'green' : 'red';
+				let txt = Helper.getCryptoFromInt( settings.get_enum('cryptocoin')) + ': '
+						+ this.price + ' '
+						+  Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'symbol');
+
+
+				if (this.price > oldPrice) {
+					this.buttonText.style_class = 'green';
+				} else if (this.price < oldPrice) {
+					this.buttonText.style_class = 'red';
+				} else {
+					this.buttonText.style_class = 'gray';
+				}
 				this.buttonText.set_text(txt);
 			}
 		},
@@ -129,11 +134,11 @@ const BipandaAssetsIndicator = new Lang.Class({
 			}
 		},
 		 _openBrowser: function() {
-		 
+
 			let url = BP_API_URL;
 			Util.spawnCommandLine("xdg-open " + url)
 	    },
-		
+
 
 		stop: function () {
 			if (_httpSession !== undefined)
