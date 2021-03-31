@@ -34,6 +34,18 @@ class MyPrefsWidget extends Gtk.Box {
     this.addNumberOfDecimals(settings);
     this.addCryptocoin(settings);
     this.addCurrency(settings);
+    
+
+    this.addDisplayType(settings);
+    this.addBallance(settings);
+
+
+    this.add(new Gtk.Label({
+      label : "Alets"    
+    }));
+
+    this.addAboveAlert(settings);
+
 
     this.add(new Gtk.Label({
       label : "API"    
@@ -108,11 +120,10 @@ class MyPrefsWidget extends Gtk.Box {
       currentClickAction,
       (value) => settings.set_enum('cryptocoin', value)
     );
-    this.add(this.buildConfigRow(labelDefaultClickAction, comboBoxDefaultClickAction));
+    this.add(this.buildConfigRow('Cryptocoin', comboBoxDefaultClickAction));
   }
 
   addCurrency(settings){
-    const labelDefaultClickAction = 'Currency';
     let clickActionOptions = [];
 
     for(let i=0;i< Helper.currencies.length;i++){
@@ -126,7 +137,53 @@ class MyPrefsWidget extends Gtk.Box {
       currentClickAction,
       (value) => settings.set_enum('curency', value)
     );
-    this.add(this.buildConfigRow(labelDefaultClickAction, comboBoxDefaultClickAction));
+    this.add(this.buildConfigRow('Currency', comboBoxDefaultClickAction));
+  }
+
+   addDisplayType(settings){
+    let clickActionOptions = [
+      ['Crypto price' , 0],
+      ['How much I own', 1]
+    ];
+
+    const currentClickAction = settings.get_enum('display-type');
+    const comboBoxDefaultClickAction = this.getComboBox(
+      clickActionOptions,
+      GObject.TYPE_INT,
+      currentClickAction,
+      (value) => settings.set_enum('display-type', value)
+    );
+    this.add(this.buildConfigRow('Display type', comboBoxDefaultClickAction));
+  }
+
+  addBallance(settings){
+    let spinButton = new Gtk.SpinButton();
+    spinButton.set_sensitive(true);
+    spinButton.set_range(0, 6);
+    spinButton.set_value(settings.get_double('wallet'));
+    log('my wallet version...');
+    log(settings.get_double('wallet'));
+    spinButton.set_increments(1, 2);
+
+    spinButton.connect("value-changed", function (w) {
+      settings.set_int('wallet', w.get_value_as_double());
+    });
+
+    this.add(this.buildConfigRow('Ammount of crypto', spinButton));
+  }
+
+   addAboveAlert(settings){
+    let spinButton = new Gtk.SpinButton();
+    spinButton.set_sensitive(true);
+    spinButton.set_value(settings.get_value('alert-above-1'));
+    spinButton.set_increments(0.1, 0.2);
+
+    spinButton.connect("value-changed", function (w) {
+      log(w.get_value_as_int());
+      settings.set_double('alert-above-1', w.get_value_as_int());
+    });
+
+    this.add(this.buildConfigRow('Above price alert', spinButton));
   }
 
 /**
@@ -167,7 +224,7 @@ class MyPrefsWidget extends Gtk.Box {
           expand: true,
       }), widget);
     }
-    
+
     const hbox =  new Gtk.Box({
         orientation: Gtk.Orientation.HORIZONTAL,
         margin_top: 5,

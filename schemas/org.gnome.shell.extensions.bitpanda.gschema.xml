@@ -65,6 +65,11 @@
   </enum>
 
 
+<enum id="org.gnome.shell.extensions.bitpanda.display_type">
+    <value value="0" nick="Crypto price"/>
+    <value value="1" nick="How Much I own"/>
+  </enum>
+
   <schema id="org.gnome.shell.extensions.bitpanda"
     path="/org/gnome/shell/extensions/bitpanda@bitpanda.com/">
 
@@ -88,6 +93,18 @@
     
     <key name="curency" enum="org.gnome.shell.extensions.bitpanda.curency">
       <default>'EUR'</default>
+    </key>
+
+    <key name="display-type" enum="org.gnome.shell.extensions.bitpanda.display_type">
+      <default>'Crypto price'</default>
+      <summary>What do you want see in you top bar</summary>
+      <description>Here you can set what to be displayed</description>
+    </key>
+
+     <key type="d" name="wallet">
+      <default>0.00</default>
+      <summary>Your Wallet ballance</summary>
+      <description>Ammout of crypto that you have</description>
     </key>
 
     <key type="d" name="alert-above-1">
