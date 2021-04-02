@@ -34,7 +34,6 @@ class MyPrefsWidget extends Gtk.Box {
     this.addNumberOfDecimals(settings);
     this.addCryptocoin(settings);
     this.addCurrency(settings);
-    
 
     this.addDisplayType(settings);
     this.addBallance(settings);
@@ -157,22 +156,24 @@ class MyPrefsWidget extends Gtk.Box {
   }
 
   addBallance(settings){
+    //TODO: fix this double issue
     let spinButton = new Gtk.SpinButton();
-    spinButton.set_sensitive(true);
-    spinButton.set_range(0, 6);
+    // spinButton.set_sensitive(true);
+    spinButton.set_range(0, 5000);
     spinButton.set_value(settings.get_double('wallet'));
     log('my wallet version...');
-    log(settings.get_double('wallet'));
+    // log(settings.get_double('wallet'));
     spinButton.set_increments(1, 2);
 
     spinButton.connect("value-changed", function (w) {
-      settings.set_int('wallet', w.get_value_as_double());
+      settings.set_value('wallet', w.get_value_as_double());
     });
 
     this.add(this.buildConfigRow('Ammount of crypto', spinButton));
   }
 
    addAboveAlert(settings){
+    //TODO: implement support for double variables
     let spinButton = new Gtk.SpinButton();
     spinButton.set_sensitive(true);
     spinButton.set_value(settings.get_value('alert-above-1'));

@@ -107,14 +107,17 @@ const BipandaAssetsIndicator = new Lang.Class({
 
 			if(typeof lastItem.attributes !== 'undefined' && typeof lastItem.attributes.close !== 'undefined'){	
 
+				let txt ;
 				let oldPrice = this.price;
 				this.price = parseFloat(lastItem.attributes.close).toFixed(numberOfDecimals).toString();
-				
-				let txt = Helper.getCryptoFromInt( settings.get_enum('cryptocoin')) + ': '  
-						+ this.price + ' ' 
-						+  Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'symbol');
-				
 
+				if(settings.get_enum('display-type') === 1){
+					txt = parseFloat(this.price * settings.get_double('wallet')).toFixed(numberOfDecimals);
+				} else {
+					txt = Helper.getCryptoFromInt( settings.get_enum('cryptocoin')) + ': '  
+						+ this.price;
+				}
+				txt +=  ' ' +  Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'symbol');
 				
 				this.buttonText.style_class = this.price >= oldPrice ? 'green' : 'red';
 				this.buttonText.set_text(txt);
@@ -159,7 +162,15 @@ const BipandaAssetsIndicator = new Lang.Class({
 	}
 );
 
+function log(argument) {
+	log("===== gsettings1 Example =====");
+        let gsettings1  = settings.get_int('number-of-decimals');
+	log(gsettings1);
+}
 function init() {
+	//ref: https://gnome-shell-extension-examples.readthedocs.io/en/latest/gsettings1.html
+	let settings = Helper.getSettings();
+	settings.connect('changed::' + 'number-of-decimals', log);
 }
 
 function enable() {

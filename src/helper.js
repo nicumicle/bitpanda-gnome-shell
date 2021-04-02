@@ -109,12 +109,13 @@ var getSettings = function(){
 	    Me.dir.get_child("schemas").get_path(),
 	    GioSSS.get_default(),
 	    false
-	  );
+	);
   	let schemaObj = schemaSource.lookup(
     		'org.gnome.shell.extensions.bitpanda', true);
   	if (!schemaObj) {
-    		return false;
+    	return false;
   	}
+  	
   	return new Gio.Settings({ settings_schema : schemaObj });
 
 };
