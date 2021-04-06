@@ -101,22 +101,28 @@
       <description>Here you can set what to be displayed</description>
     </key>
 
-     <key type="d" name="wallet">
-      <default>0.00</default>
+     <key type="s" name="wallet">
+      <default>'0.00'</default>
       <summary>Your Wallet ballance</summary>
       <description>Ammout of crypto that you have</description>
     </key>
 
-    <key type="d" name="alert-above-1">
-      <default>0.00</default>
+    <key type="s" name="alert-above-1">
+      <default>'0.00'</default>
       <summary>Above Price alert</summary>
       <description>Trigger an allert when price is above specific value. If 0.00, then no alert is triggered.</description>
     </key>
 
-    <key type="d" name="alert-below-1">
-      <default>0.00</default>
+    <key type="s" name="alert-below-1">
+      <default>'0.00'</default>
       <summary>Below Price alert</summary>
       <description>Trigger an allert when price is below specific value. If 0.00, then no alert is triggered.</description>
+    </key>
+
+    <key type="i" name="alert-interval">
+      <default>60</default>
+      <summary>Alert interval</summary>
+      <description>The interval value for displaying alerts.</description>
     </key>
 
   </schema>
