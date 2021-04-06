@@ -43,26 +43,7 @@ const BipandaAssetsIndicator = new Lang.Class({
             this.actor.add_actor(hbox);
             this.actor.connect("button_press_event", Lang.bind(this, this._openSettings));
 
-            // this._presence = new GnomeSession.Presence(Lang.bind(this, function(proxy, error) {
-            //     this._onStatusChanged(proxy.status);
-            // }));
-            // this._presence_connection = this._presence.connectSignal('StatusChanged', function(proxy, senderName, [status]) {
-            //     this._onStatusChanged(status);
-            // });
-            //
-            // settings.connect('changed', () => {
-            //     if(typeof bpMenu !== 'undefined' && !this._idle) {
-            //         bpMenu._refresh();
-            //     }
-            // });
             this._refresh();
-        },
-        _onStatusChanged(status) {
-            this._idle = false;
-
-            if (status === GnomeSession.PresenceStatus.IDLE) {
-                this._idle = true;
-            }
         },
         _refresh: function () {
             let settings = Helper.getSettings();
@@ -188,12 +169,13 @@ const BipandaAssetsIndicator = new Lang.Class({
 );
 
 function init() {
-    // let settings = Helper.getSettings();
-    // settings.connect('changed', () => {
-    //     if(typeof bpMenu !== 'undefined') {
-    //         bpMenu._refresh();
-    //     }
-    // });
+    //TODO: here we need some improvement
+    let settings = Helper.getSettings();
+    settings.connect('changed', () => {
+        if(typeof bpMenu !== 'undefined') {
+            bpMenu._refresh();
+        }
+    });
 }
 
 function enable() {
