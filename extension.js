@@ -115,7 +115,7 @@ const BipandaAssetsIndicator = new Lang.Class({
                 ) {
                     triggerAlert = true;
                 }
-
+                triggerAlert = triggerAlert && settings.get_boolean('alerts-enabled');
                 if (triggerAlert && ((Date.now() - this.allertTriggered) >= settings.get_int('alert-interval') * 1000)) {
                     this.allertTriggered = Date.now();
                     Main.notify('Bitpanda price alert',

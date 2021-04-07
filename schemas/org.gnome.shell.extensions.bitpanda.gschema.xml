@@ -113,6 +113,10 @@
       <description>Trigger an allert when price is above specific value. If 0.00, then no alert is triggered.</description>
     </key>
 
+    <key name="alerts-enabled" type="b">
+      <default>false</default>
+    </key>
+
     <key type="s" name="alert-below-1">
       <default>'0.00'</default>
       <summary>Below Price alert</summary>

@@ -2,6 +2,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const Helper = Me.imports.src.helper;
+const Gio = imports.gi.Gio;
 
 function init() {
 }
@@ -36,6 +37,7 @@ const MyPrefsWidget = GObject.registerClass(
             this.add(new Gtk.Label({
                 label: "Alerts",
             }));
+            this.addAlertsEnabled(settings);
             this.addAboveAlert(settings);
             this.addBelowAlert(settings);
             this.alertInterval(settings);
@@ -139,6 +141,23 @@ const MyPrefsWidget = GObject.registerClass(
         /**
          * ALERTS
          */
+
+        addAlertsEnabled(settings){
+            let toggle = new Gtk.Switch({
+                active: true,
+                halign: Gtk.Align.END,
+                visible: true
+            });
+            // Bind the switch to the `show-indicator` key
+            settings.bind(
+                'alerts-enabled',
+                toggle,
+                'active',
+                Gio.SettingsBindFlags.DEFAULT
+            );
+            this.add(this.buildConfigRow('Alerts Enabled', toggle));
+        }
+
         addAboveAlert(settings) {
             let textfield = new Gtk.Entry({hexpand: true, margin_left: 20});
             textfield.set_text(settings.get_string('alert-above-1'));
