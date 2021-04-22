@@ -139,7 +139,7 @@ const MyPrefsWidget = GObject.registerClass(
             prefs.add(this.addNumberOfDecimals(settings));
             prefs.add(this.addCurrency(settings));
             prefs.add(this.addDisplayType(settings));
-            prefs.add(this.addBallance(settings));
+            prefs.add(this.addBalance(settings));
 
             return prefs;
         }
@@ -177,7 +177,7 @@ const MyPrefsWidget = GObject.registerClass(
             }
 
             //Tabs
-            addPage('Coins', this.getPageCoins(settings));
+            //addPage('Coins', this.getPageCoins(settings));
             addPage('Display', this.getPageDisplay(settings));
             addPage('Alerts', this.getPageAlerts(settings));
             addPage('API', this.getPageAPI(settings));
@@ -269,14 +269,14 @@ const MyPrefsWidget = GObject.registerClass(
             return this.buildConfigRow('Display type', comboBoxDefaultClickAction);
         }
 
-        addBallance(settings) {
-            let textfield = new Gtk.Entry({hexpand: true, margin_left: 20});
-            textfield.set_text(settings.get_string('wallet'));
-            textfield.connect('changed', (entry) => {
+        addBalance(settings) {
+            let textField = new Gtk.Entry({hexpand: true, margin_left: 20});
+            textField.set_text(settings.get_string('wallet'));
+            textField.connect('changed', (entry) => {
                 settings.set_string('wallet', entry.get_text());
             });
 
-            return this.buildConfigRow('Amount of crypto that you own', textfield);
+            return this.buildConfigRow('Amount of crypto that you own', textField);
         }
 
         /**
