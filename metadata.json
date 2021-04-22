@@ -1,7 +1,7 @@
 {
     "uuid": "bitpanda@bitpanda.com",
     "name": "Bitpanda",
-    "description": "This extension will display bitpanda crypto currencies and prices.",
+    "description": "This extension will display Bitpanda crypto currencies and prices.",
     "version": 2,
     "shell-version": [ "3.36" ],
     "url": "https://github.com/nicumicle/bitpanda-gnome-shell"
