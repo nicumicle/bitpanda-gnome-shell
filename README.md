@@ -39,12 +39,20 @@ BTC, ETH, BEST, CHZ, ADA, LTC, DOT, BTT, DASH, XRP, MIOTA, XLM, TRX, DOGE, DGB, 
 
 - Crypto price
 - Current Crypto amount that you own 
+- Crypto price and Crypto amount that you own
 
 ## Alerts
- There are 2 types of alerts. just set the value you want to be alerted, and you will see a notification on your computer.
-If you set the value to 0, you will get no notifications.
+You can set up alerts when the crypto price gets to a certain value.
+
+There are two types of alerts:
+ - Alert when price is above a specific value
+ - Alert when price is below a specific value
 
 Also, you can set notifications interval, in order to avoid too many notifications.
+
+## API
+
+You can also set the api calls interval. The minimum value is 10 seconds.
 
 ## Contribution
 
@@ -54,6 +62,6 @@ Please feel free to contribute by sending pull requests or raising issues.
 
  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
  
- This program is distributed in the hope that it will be useful,but WITHOUT ANY WARRANTY.
+ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.
 
  You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
