@@ -76,7 +76,7 @@ const BipandaAssetsIndicator = new Lang.Class({
         },
 
         _refreshUI: function (jsonObject, settings) {
-            if(typeof jsonObject === 'undefined '){
+            if (typeof jsonObject === 'undefined ') {
                 return false;
             }
             if (typeof jsonObject.data === 'undefined' || jsonObject.data.length === 0) {
@@ -95,15 +95,7 @@ const BipandaAssetsIndicator = new Lang.Class({
                 this.price = parseFloat(lastItem.attributes.close).toFixed(numberOfDecimals).toString();
 
                 let priceCompare = this.price;
-                if (settings.get_enum('display-type') === 1) {
-                    priceCompare = this.price * parseFloat(settings.get_string('wallet'));
-                    txt = parseFloat(priceCompare).toFixed(numberOfDecimals);
-                } else {
-                    txt = Helper.getCryptoFromInt(settings.get_enum('cryptocoin')) + ': '
-                        + this.price;
-                }
-
-                txt += ' ' + Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'symbol');
+                txt = this._buildTopBarText(settings, this.price, numberOfDecimals);
 
                 let triggerAlert = false;
                 if (parseFloat(settings.get_string('alert-above-1')) > 0
@@ -135,6 +127,23 @@ const BipandaAssetsIndicator = new Lang.Class({
                 }
                 this.buttonText.set_text(txt);
             }
+        },
+
+        _buildTopBarText: function(settings, price, numberOfDecimals){
+            let displayText = '';
+            let displayType = settings.get_enum('display-type');
+            let currencySymbol = Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'symbol');
+            if (displayType === 1 || displayType === 2) {
+                let walletAmount = price * parseFloat(settings.get_string('wallet'));
+                displayText += parseFloat(walletAmount).toFixed(numberOfDecimals) + ' ' + currencySymbol;
+            }
+            if (displayType === 0 || displayType === 2) {
+
+                displayText += (displayType === 2 ? ' | ' : '' ) + Helper.getCryptoFromInt(settings.get_enum('cryptocoin')) + ': '
+                    + price + ' ' + Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'symbol');
+            }
+
+            return displayText;
         },
 
         _openSettings: function () {
@@ -172,7 +181,7 @@ function init() {
     //TODO: here we need some improvement
     let settings = Helper.getSettings();
     settings.connect('changed', () => {
-        if(typeof bpMenu !== 'undefined') {
+        if (typeof bpMenu !== 'undefined') {
             bpMenu._refresh();
         }
     });

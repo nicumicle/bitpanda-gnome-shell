@@ -15,37 +15,177 @@ function buildPrefsWidget() {
 
 const MyPrefsWidget = GObject.registerClass(
     class MyPrefsWidget extends Gtk.Box {
+        buildPage() {
+            let result =  new Gtk.Box({
+                orientation: Gtk.Orientation.VERTICAL,
+                margin: 20,
+                margin_top: 10,
+                expand: true,
+            });
+            let scrollWindow =  new Gtk.ScrolledWindow({ shadow_type: Gtk.ShadowType.IN });
+            scrollWindow.set_border_width(10);
+
+            // there is always the scrollbar (otherwise: AUTOMATIC - only if needed - or NEVER)
+            scrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS);
+
+            return result;
+            // return scrollWindow; //In case you want a scrollable window
+
+        }
+
+        getPageCoins(settings){
+            const prefs = this.buildPage();
+            let scrollWindow =  new Gtk.ScrolledWindow({ shadow_type: Gtk.ShadowType.IN });
+            scrollWindow.set_border_width(10);
+
+            prefs.add(this.buildCoinTopRow());
+            for(let i=0;i<Helper.crypto.length;i++){
+                prefs.add(this.buildCoinRow(settings, Helper.getCryptoFromInt(i), 'test'));
+            }
+           scrollWindow.add(prefs);
+            return scrollWindow;
+        }
+        buildCoinTopRow(){
+            const hbox = new Gtk.Box({
+                orientation: Gtk.Orientation.HORIZONTAL,
+                margin_top: 10,
+                expand: false,
+                hexpand: false,
+                vexpand: false,
+                margin_bottom: 10,
+            });
+            hbox.add(new Gtk.Label({
+                label: 'Crypto',
+                // xalign: 0,
+                expand: true,
+                halign: Gtk.Align.START,
+            }));
+            hbox.add(new Gtk.Label({
+                label: 'Amount',
+                expand: true,
+            }));
+            hbox.add(new Gtk.Label({
+                label: 'Enabled',
+                // xalign: 0,
+                expand: true,
+                halign: Gtk.Align.END,
+            }));
+
+            return hbox;
+        }
+        buildCoinRow(settings, labelText, variableName){
+            labelText = labelText.padEnd(8,' ');
+            const hbox = new Gtk.Box({
+                orientation: Gtk.Orientation.HORIZONTAL,
+                margin_top: 10,
+                expand: false,
+                hexpand: false,
+                vexpand: false,
+                margin_bottom: 10,
+            });
+            let label =  new Gtk.Label({
+                label: labelText,
+                halign: Gtk.Align.START,
+                expand: true,
+                width_chars: 6,
+            });
+            let widget = new Gtk.Entry({
+                hexpand: true,
+                halign: Gtk.Align.CENTER
+            });
+
+            let json = JSON.parse(settings.get_string('coins-config'));
+            //TODO: do some logic here, in order to parse everything, and bind it to the variables.
+            let textValue = typeof json[labelText] !== "undefined"
+                ? json[labelText]['amount']
+                : '0';
+            widget.set_text(textValue);
+            widget.connect('changed', (entry) => {
+                json[labelText] = {
+                    'amount': entry.get_text(),
+                    'enabled': true
+            }
+
+                settings.set_string('wallet', entry.get_text());
+            });
+
+            let toggle = new Gtk.Switch({
+                active: true,
+                halign: Gtk.Align.END,
+                vexpand: false,
+                hexpand: false,
+                visible: false,
+                expand: false,
+            });
+
+
+
+            //TODO: bind this variables...
+            // settings.bind(
+            //     variableName,
+            //     toggle,
+            //     'active',
+            //     Gio.SettingsBindFlags.DEFAULT
+            // );
+            hbox.add(label);
+            hbox.add(widget);
+            hbox.add(toggle);
+
+            return hbox;
+        }
+        getPageDisplay(settings) {
+            const prefs = this.buildPage();
+            prefs.add(this.addCryptocoin(settings));
+            prefs.add(this.addNumberOfDecimals(settings));
+            prefs.add(this.addCurrency(settings));
+            prefs.add(this.addDisplayType(settings));
+            prefs.add(this.addBallance(settings));
+
+            return prefs;
+        }
+
+        getPageAlerts(settings) {
+            const prefs = this.buildPage();
+            prefs.add(this.addAlertsEnabled(settings));
+            prefs.add(this.addAboveAlert(settings));
+            prefs.add(this.addBelowAlert(settings));
+            prefs.add(this.alertInterval(settings));
+
+            return prefs;
+        }
+
+        getPageAPI(settings) {
+            const prefs = this.buildPage();
+            prefs.add(this.addTimeout(settings));
+
+            return prefs;
+        }
+
         _init(params) {
             super._init(params);
             this.margin = 20;
             this.set_spacing(15);
             this.set_orientation(Gtk.Orientation.VERTICAL);
-
-            this.connect('destroy', Gtk.main_quit);
+            this.width = 600;
 
             let settings = Helper.getSettings();
 
-            this.add(new Gtk.Label({
-                label: 'General'
-            }));
-            this.addNumberOfDecimals(settings);
-            this.addCryptocoin(settings);
-            this.addCurrency(settings);
-            this.addDisplayType(settings);
-            this.addBallance(settings);
+            const notebook = new Gtk.Notebook();
 
-            this.add(new Gtk.Label({
-                label: "Alerts",
-            }));
-            this.addAlertsEnabled(settings);
-            this.addAboveAlert(settings);
-            this.addBelowAlert(settings);
-            this.alertInterval(settings);
+            function addPage(label, page) {
+                notebook.append_page(page, new Gtk.Label({label}));
+            }
 
-            this.add(new Gtk.Label({
-                label: "API",
-            }));
-            this.addTimeout(settings);
+            //Tabs
+            addPage('Coins', this.getPageCoins(settings));
+            addPage('Display', this.getPageDisplay(settings));
+            addPage('Alerts', this.getPageAlerts(settings));
+            addPage('API', this.getPageAPI(settings));
+
+            this.add(notebook);
+
+
+            this.connect('destroy', Gtk.main_quit);
         }
 
 
@@ -60,7 +200,7 @@ const MyPrefsWidget = GObject.registerClass(
                 settings.set_int('timeout', w.get_value_as_int());
             });
 
-            this.add(this.buildConfigRow('API Calls interval / seconds', spinButton));
+            return this.buildConfigRow('API Calls interval / seconds', spinButton);
         }
 
 
@@ -75,7 +215,7 @@ const MyPrefsWidget = GObject.registerClass(
                 settings.set_int('number-of-decimals', w.get_value_as_int());
             });
 
-            this.add(this.buildConfigRow('Number Of Decimals', spinButton));
+            return this.buildConfigRow('Number Of Decimals', spinButton);
         }
 
         addCryptocoin(settings) {
@@ -91,7 +231,7 @@ const MyPrefsWidget = GObject.registerClass(
                 (value) => settings.set_enum('cryptocoin', value)
             );
 
-            this.add(this.buildConfigRow('Cryptocoin', comboBoxDefaultClickAction));
+            return this.buildConfigRow('Cryptocoin', comboBoxDefaultClickAction);
         }
 
         addCurrency(settings) {
@@ -106,13 +246,14 @@ const MyPrefsWidget = GObject.registerClass(
                 currentClickAction,
                 (value) => settings.set_enum('curency', value)
             );
-            this.add(this.buildConfigRow('Currency', comboBoxDefaultClickAction));
+            return this.buildConfigRow('Currency', comboBoxDefaultClickAction);
         }
 
         addDisplayType(settings) {
             let clickActionOptions = [
                 ['Crypto price', 0],
-                ['How much I own', 1]
+                ['How much I own', 1],
+                ['Crypto price and How much I own', 2]
             ];
 
             const currentClickAction = settings.get_enum('display-type');
@@ -125,7 +266,7 @@ const MyPrefsWidget = GObject.registerClass(
                     this.displayWallet = value === 1;
                 }
             );
-            this.add(this.buildConfigRow('Display type', comboBoxDefaultClickAction));
+            return this.buildConfigRow('Display type', comboBoxDefaultClickAction);
         }
 
         addBallance(settings) {
@@ -135,14 +276,14 @@ const MyPrefsWidget = GObject.registerClass(
                 settings.set_string('wallet', entry.get_text());
             });
 
-            this.add(this.buildConfigRow('Amount of crypto that you own', textfield));
+            return this.buildConfigRow('Amount of crypto that you own', textfield);
         }
 
         /**
          * ALERTS
          */
 
-        addAlertsEnabled(settings){
+        addAlertsEnabled(settings) {
             let toggle = new Gtk.Switch({
                 active: true,
                 halign: Gtk.Align.END,
@@ -155,7 +296,7 @@ const MyPrefsWidget = GObject.registerClass(
                 'active',
                 Gio.SettingsBindFlags.DEFAULT
             );
-            this.add(this.buildConfigRow('Alerts Enabled', toggle));
+            return this.buildConfigRow('Alerts Enabled', toggle);
         }
 
         addAboveAlert(settings) {
@@ -165,7 +306,7 @@ const MyPrefsWidget = GObject.registerClass(
                 settings.set_string('alert-above-1', entry.get_text());
             });
 
-            this.add(this.buildConfigRow('Alert when price is above value', textfield));
+            return this.buildConfigRow('Alert when price is above value', textfield);
         }
 
         addBelowAlert(settings) {
@@ -175,7 +316,7 @@ const MyPrefsWidget = GObject.registerClass(
                 settings.set_string('alert-below-1', entry.get_text());
             });
 
-            this.add(this.buildConfigRow('Alert when price is below value', textfield));
+            return this.buildConfigRow('Alert when price is below value', textfield);
         }
 
         alertInterval(settings) {
@@ -189,7 +330,7 @@ const MyPrefsWidget = GObject.registerClass(
                 settings.set_int('alert-interval', w.get_value_as_int());
             });
 
-            this.add(this.buildConfigRow('Alert trigger interval (seconds )', spinButton));
+            return this.buildConfigRow('Alert trigger interval (seconds )', spinButton);
         }
 
         /**
@@ -224,7 +365,7 @@ const MyPrefsWidget = GObject.registerClass(
 
         buildConfigRow(label, widget) {
             if (typeof label === 'string') {
-                label  = new Gtk.Label({
+                label = new Gtk.Label({
                     label,
                     xalign: 0,
                     expand: true,

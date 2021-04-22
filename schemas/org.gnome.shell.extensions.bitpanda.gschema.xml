@@ -68,6 +68,7 @@
 <enum id="org.gnome.shell.extensions.bitpanda.display_type">
     <value value="0" nick="Crypto price"/>
     <value value="1" nick="How Much I own"/>
+    <value value="2" nick="Crypto price and How much I own" />
   </enum>
 
   <schema id="org.gnome.shell.extensions.bitpanda"
@@ -127,6 +128,12 @@
       <default>60</default>
       <summary>Alert interval</summary>
       <description>The interval value for displaying alerts.</description>
+    </key>
+
+    <key type="s" name="coins-config">
+      <default>'{}'</default>
+      <summary>ll coins config tab.</summary>
+      <description>All coins config tab as a JSON.</description>
     </key>
 
   </schema>
