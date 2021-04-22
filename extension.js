@@ -129,7 +129,7 @@ const BipandaAssetsIndicator = new Lang.Class({
             }
         },
 
-        _buildTopBarText: function(settings, price, numberOfDecimals){
+        _buildTopBarText: function (settings, price, numberOfDecimals) {
             let displayText = '';
             let displayType = settings.get_enum('display-type');
             let currencySymbol = Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'symbol');
@@ -139,7 +139,7 @@ const BipandaAssetsIndicator = new Lang.Class({
             }
             if (displayType === 0 || displayType === 2) {
 
-                displayText += (displayType === 2 ? ' | ' : '' ) + Helper.getCryptoFromInt(settings.get_enum('cryptocoin')) + ': '
+                displayText += (displayType === 2 ? ' | ' : '') + Helper.getCryptoFromInt(settings.get_enum('cryptocoin')) + ': '
                     + price + ' ' + Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'symbol');
             }
 

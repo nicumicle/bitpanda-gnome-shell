@@ -16,13 +16,13 @@ function buildPrefsWidget() {
 const MyPrefsWidget = GObject.registerClass(
     class MyPrefsWidget extends Gtk.Box {
         buildPage() {
-            let result =  new Gtk.Box({
+            let result = new Gtk.Box({
                 orientation: Gtk.Orientation.VERTICAL,
                 margin: 20,
                 margin_top: 10,
                 expand: true,
             });
-            let scrollWindow =  new Gtk.ScrolledWindow({ shadow_type: Gtk.ShadowType.IN });
+            let scrollWindow = new Gtk.ScrolledWindow({shadow_type: Gtk.ShadowType.IN});
             scrollWindow.set_border_width(10);
 
             // there is always the scrollbar (otherwise: AUTOMATIC - only if needed - or NEVER)
@@ -33,19 +33,20 @@ const MyPrefsWidget = GObject.registerClass(
 
         }
 
-        getPageCoins(settings){
+        getPageCoins(settings) {
             const prefs = this.buildPage();
-            let scrollWindow =  new Gtk.ScrolledWindow({ shadow_type: Gtk.ShadowType.IN });
+            let scrollWindow = new Gtk.ScrolledWindow({shadow_type: Gtk.ShadowType.IN});
             scrollWindow.set_border_width(10);
 
             prefs.add(this.buildCoinTopRow());
-            for(let i=0;i<Helper.crypto.length;i++){
+            for (let i = 0; i < Helper.crypto.length; i++) {
                 prefs.add(this.buildCoinRow(settings, Helper.getCryptoFromInt(i), 'test'));
             }
-           scrollWindow.add(prefs);
+            scrollWindow.add(prefs);
             return scrollWindow;
         }
-        buildCoinTopRow(){
+
+        buildCoinTopRow() {
             const hbox = new Gtk.Box({
                 orientation: Gtk.Orientation.HORIZONTAL,
                 margin_top: 10,
@@ -73,8 +74,9 @@ const MyPrefsWidget = GObject.registerClass(
 
             return hbox;
         }
-        buildCoinRow(settings, labelText, variableName){
-            labelText = labelText.padEnd(8,' ');
+
+        buildCoinRow(settings, labelText, variableName) {
+            labelText = labelText.padEnd(8, ' ');
             const hbox = new Gtk.Box({
                 orientation: Gtk.Orientation.HORIZONTAL,
                 margin_top: 10,
@@ -83,7 +85,7 @@ const MyPrefsWidget = GObject.registerClass(
                 vexpand: false,
                 margin_bottom: 10,
             });
-            let label =  new Gtk.Label({
+            let label = new Gtk.Label({
                 label: labelText,
                 halign: Gtk.Align.START,
                 expand: true,
@@ -104,7 +106,7 @@ const MyPrefsWidget = GObject.registerClass(
                 json[labelText] = {
                     'amount': entry.get_text(),
                     'enabled': true
-            }
+                }
 
                 settings.set_string('wallet', entry.get_text());
             });
@@ -117,7 +119,6 @@ const MyPrefsWidget = GObject.registerClass(
                 visible: false,
                 expand: false,
             });
-
 
 
             //TODO: bind this variables...
@@ -133,6 +134,7 @@ const MyPrefsWidget = GObject.registerClass(
 
             return hbox;
         }
+
         getPageDisplay(settings) {
             const prefs = this.buildPage();
             prefs.add(this.addCryptocoin(settings));
