@@ -65,6 +65,12 @@
   </enum>
 
 
+<enum id="org.gnome.shell.extensions.bitpanda.display_type">
+    <value value="0" nick="Crypto price"/>
+    <value value="1" nick="How Much I own"/>
+    <value value="2" nick="Crypto price and How much I own" />
+  </enum>
+
   <schema id="org.gnome.shell.extensions.bitpanda"
     path="/org/gnome/shell/extensions/bitpanda@bitpanda.com/">
 
@@ -72,6 +78,12 @@
       <default>2</default>
       <summary>Number of decimals</summary>
       <description>How many decimals to be displayed in the menu bar for the current cryptocoin.</description>
+    </key>
+
+     <key type="i" name="timeout">
+      <default>60</default>
+      <summary>Timeout (s)</summary>
+      <description>How oft the call to bitpanda API should be made. Time is seconds.</description>
     </key>
 
     <key name="cryptocoin" enum="org.gnome.shell.extensions.bitpanda.cryptocoin">
@@ -84,16 +96,44 @@
       <default>'EUR'</default>
     </key>
 
-    <key type="d" name="alert-above-1">
-      <default>0.00</default>
+    <key name="display-type" enum="org.gnome.shell.extensions.bitpanda.display_type">
+      <default>'Crypto price'</default>
+      <summary>What do you want see in you top bar</summary>
+      <description>Here you can set what to be displayed</description>
+    </key>
+
+     <key type="s" name="wallet">
+      <default>'0.00'</default>
+      <summary>Your Wallet ballance</summary>
+      <description>Ammout of crypto that you have</description>
+    </key>
+
+    <key type="s" name="alert-above-1">
+      <default>'0.00'</default>
       <summary>Above Price alert</summary>
       <description>Trigger an allert when price is above specific value. If 0.00, then no alert is triggered.</description>
     </key>
 
-    <key type="d" name="alert-below-1">
-      <default>0.00</default>
+    <key name="alerts-enabled" type="b">
+      <default>false</default>
+    </key>
+
+    <key type="s" name="alert-below-1">
+      <default>'0.00'</default>
       <summary>Below Price alert</summary>
       <description>Trigger an allert when price is below specific value. If 0.00, then no alert is triggered.</description>
+    </key>
+
+    <key type="i" name="alert-interval">
+      <default>60</default>
+      <summary>Alert interval</summary>
+      <description>The interval value for displaying alerts.</description>
+    </key>
+
+    <key type="s" name="coins-config">
+      <default>'{}'</default>
+      <summary>ll coins config tab.</summary>
+      <description>All coins config tab as a JSON.</description>
     </key>
 
   </schema>
