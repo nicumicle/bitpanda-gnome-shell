@@ -11,14 +11,12 @@ const Gio = imports.gi.Gio;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Helper = Me.imports.src.helper;
 
-
-const BP_API_URL = 'https://api.bitpanda.com/v1/ohlc/';
-
 let _httpSession;
 var bpMenu;
+const BP_API_URL = 'https://api.bitpanda.com/v1/ohlc/';
 
-const BipandaAssetsIndicator = new Lang.Class({
-        Name: 'BipandaAssetsIndicator',
+const BitpandaAssetsIndicator = new Lang.Class({
+        Name: 'BitpandaAssetsIndicator',
         Extends: PanelMenu.Button,
 
         _init: function () {
@@ -32,6 +30,7 @@ const BipandaAssetsIndicator = new Lang.Class({
             });
             this.price = 0;
             this.allertTriggered = Date.now();
+
             //add icon
             const hbox = new St.BoxLayout({style_class: "panel-status-menu-box"});
             const gicon = Gio.icon_new_for_string(Me.path + "/bitpanda.png");
@@ -89,7 +88,6 @@ const BipandaAssetsIndicator = new Lang.Class({
             let numberOfDecimals = settings.get_int('number-of-decimals');
 
             if (typeof lastItem.attributes !== 'undefined' && typeof lastItem.attributes.close !== 'undefined') {
-
                 let txt;
                 let oldPrice = this.price;
                 this.price = parseFloat(lastItem.attributes.close).toFixed(numberOfDecimals).toString();
@@ -156,6 +154,7 @@ const BipandaAssetsIndicator = new Lang.Class({
                 ]);
             }
         },
+
         _removeTimeout: function () {
             if (this._timeout) {
                 Mainloop.source_remove(this._timeout);
@@ -178,7 +177,6 @@ const BipandaAssetsIndicator = new Lang.Class({
 );
 
 function init() {
-    //TODO: here we need some improvement
     let settings = Helper.getSettings();
     settings.connect('changed', () => {
         if (typeof bpMenu !== 'undefined') {
@@ -188,7 +186,7 @@ function init() {
 }
 
 function enable() {
-    bpMenu = new BipandaAssetsIndicator;
+    bpMenu = new BitpandaAssetsIndicator;
     Main.panel.addToStatusArea('bitpanda-indicator', bpMenu);
 }
 

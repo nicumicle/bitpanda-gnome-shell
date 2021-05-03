@@ -8,11 +8,13 @@ When installing this extension, you will be able to see bitpanda crypto in your 
 
 ### Top menu 
 
-![Top Menu](https://github.com/nicumicle/bitpanda-gnome-shell/blob/master/screenshots/screen-shot-1.png)
+![Top Menu](https://github.com/nicumicle/bitpanda-gnome-shell/blob/master/screenshots/screenshot-1.png)
 
 ### Extension settings
 
-![Extension settings](https://github.com/nicumicle/bitpanda-gnome-shell/blob/master/screenshots/screen-shot-2.png)
+![Extension settings](https://github.com/nicumicle/bitpanda-gnome-shell/blob/master/screenshots/screenshot-2.png)
+![Extension settings](https://github.com/nicumicle/bitpanda-gnome-shell/blob/master/screenshots/screenshot-3.png)
+![Extension settings](https://github.com/nicumicle/bitpanda-gnome-shell/blob/master/screenshots/screenshot-4.png)
 
 ## Installation
  1. Clone this repo
@@ -25,7 +27,7 @@ When installing this extension, you will be able to see bitpanda crypto in your 
 ``
 
 ## Requirements
-- GNOME shell version >= 3.36
+- GNOME Shell version >= 3.36
 
 ## Supported cryptocurrencies
 
