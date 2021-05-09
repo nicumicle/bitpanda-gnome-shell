@@ -90,7 +90,7 @@ const BitpandaAssetsIndicator = new Lang.Class({
             if (typeof lastItem.attributes !== 'undefined' && typeof lastItem.attributes.close !== 'undefined') {
                 let txt;
                 let oldPrice = this.price;
-                this.price = parseFloat(lastItem.attributes.close).toFixed(numberOfDecimals).toString();
+                this.price = parseFloat(lastItem.attributes.close).toFixed(numberOfDecimals);
 
                 let priceCompare = this.price;
                 txt = this._buildTopBarText(settings, this.price, numberOfDecimals);
