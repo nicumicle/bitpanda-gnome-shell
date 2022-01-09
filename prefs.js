@@ -117,6 +117,7 @@ const MyPrefsWidget = GObject.registerClass(
             for (let i = 0; i < Helper.crypto.length; i++) {
                 clickActionOptions.push([Helper.crypto[i], i]);
             }
+
             const currentClickAction = settings.get_enum('cryptocoin');
             const comboBoxDefaultClickAction = this.getComboBox(
                 clickActionOptions,

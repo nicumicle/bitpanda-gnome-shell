@@ -9,11 +9,12 @@ const Util = imports.misc.util;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Gio = imports.gi.Gio;
 const ExtensionUtils = imports.misc.extensionUtils;
+const PopupMenu = imports.ui.popupMenu;
 const Helper = Me.imports.src.helper;
 
 let _httpSession;
 var bpMenu;
-const BP_API_URL = 'https://api.bitpanda.com/v1/ohlc/';
+const BP_API_URL = 'https://api.bitpanda.com/v2/ohlc/';
 
 const BitpandaAssetsIndicator = new Lang.Class({
         Name: 'BitpandaAssetsIndicator',
@@ -21,7 +22,6 @@ const BitpandaAssetsIndicator = new Lang.Class({
 
         _init: function () {
             _httpSession = new Soup.Session();
-            this._idle = false;
             this.parent(0.0, "Bitpanda Currency indicator", false);
             this.buttonText = new St.Label({
                 text: "Loading Bitpanda ...",
@@ -37,10 +37,10 @@ const BitpandaAssetsIndicator = new Lang.Class({
             const bitpandaIcon = new St.Icon({gicon: gicon, icon_size: "16"});
             hbox.add_child(bitpandaIcon);
             hbox.add_child(this.buttonText);
-            //endof icon
+            //end of icon
 
             this.actor.add_actor(hbox);
-            this.actor.connect("button_press_event", Lang.bind(this, this._openSettings));
+            this.actor.connect("button_press_event", Lang.bind(this, this._openMenu));
 
             this._refresh();
         },
@@ -64,21 +64,21 @@ const BitpandaAssetsIndicator = new Lang.Class({
             let message = Soup.form_request_new_from_hash('GET', url, []);
 
             _httpSession.queue_message(message, Lang.bind(this, function (_httpSession, message) {
-                    if (message.status_code !== 200)
-                        return;
+                        if (message.status_code !== 200)
+                            return;
 
-                    let jsonObject = JSON.parse(message.response_body.data);
-                    this._refreshUI(jsonObject, settings);
-                }
+                        let jsonObject = JSON.parse(message.response_body.data);
+                        this._refreshUI(jsonObject, settings);
+                    }
                 )
             );
         },
 
         _refreshUI: function (jsonObject, settings) {
-            if (typeof jsonObject === 'undefined ') {
+            if (typeof jsonObject === "undefined") {
                 return false;
             }
-            if (typeof jsonObject.data === 'undefined' || jsonObject.data.length === 0) {
+            if (typeof jsonObject.data === "undefined" || jsonObject.data.length === 0) {
                 log('Wrong data received from API.');
                 return false;
             }
@@ -87,7 +87,7 @@ const BitpandaAssetsIndicator = new Lang.Class({
 
             let numberOfDecimals = settings.get_int('number-of-decimals');
 
-            if (typeof lastItem.attributes !== 'undefined' && typeof lastItem.attributes.close !== 'undefined') {
+            if (typeof lastItem.attributes !== "undefined" && typeof lastItem.attributes.close !== "undefined") {
                 let txt;
                 let oldPrice = this.price;
                 this.price = parseFloat(lastItem.attributes.close).toFixed(numberOfDecimals);
@@ -110,7 +110,7 @@ const BitpandaAssetsIndicator = new Lang.Class({
                     this.allertTriggered = Date.now();
                     Main.notify('Bitpanda price alert',
                         'Your crypto current value: '
-                        + priceCompare.toFixed(numberOfDecimals)
+                        + parseFloat(priceCompare).toFixed(numberOfDecimals)
                         + ' '
                         + Helper.getCurrencyPropertyFromInt(settings.get_enum('curency'), 'symbol')
                     );
@@ -144,15 +144,38 @@ const BitpandaAssetsIndicator = new Lang.Class({
             return displayText;
         },
 
-        _openSettings: function () {
-            if (typeof ExtensionUtils.openPrefs === 'function') {
-                ExtensionUtils.openPrefs();
-            } else {
-                Util.spawn([
-                    "gnome-shell-extension-prefs",
-                    Me.uuid
-                ]);
-            }
+        _openMenu: function () {
+            let bitpandaItem = new PopupMenu.PopupMenuItem("Bitpanda Web");
+            let exchangeItem = new PopupMenu.PopupMenuItem("Bitpanda PRO");
+            let settingsItem = new PopupMenu.PopupMenuItem("Settings");
+
+            this.menu.removeAll();
+
+            this.menu.addMenuItem(bitpandaItem);
+            this.menu.addMenuItem(exchangeItem);
+            this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+            this.menu.addMenuItem(settingsItem);
+
+            bitpandaItem.connect('activate', () => {
+                this._openBrowser('https://web.bitpanda.com');
+            });
+            exchangeItem.connect('activate', () => {
+                this._openBrowser("https://exchange.bitpanda.com");
+            });
+            settingsItem.connect('activate', () => {
+                if (typeof ExtensionUtils.openPrefs === 'function') {
+                    ExtensionUtils.openPrefs();
+                } else {
+                    Util.spawn([
+                        "gnome-shell-extension-prefs",
+                        Me.uuid
+                    ]);
+                }
+            });
+        },
+
+        _openBrowser: function (url) {
+            Util.spawnCommandLine("xdg-open " + url);
         },
 
         _removeTimeout: function () {
@@ -179,7 +202,7 @@ const BitpandaAssetsIndicator = new Lang.Class({
 function init() {
     let settings = Helper.getSettings();
     settings.connect('changed', () => {
-        if (typeof bpMenu !== 'undefined') {
+        if (typeof bpMenu !== "undefined") {
             bpMenu._refresh();
         }
     });
